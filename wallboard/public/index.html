@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoyMomo CS — Wallboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-brand">SOYMOMO CS</div>
+  <div class="header-center">
+    <div class="header-time" id="clock">--:--:--</div>
+    <div class="header-date" id="date">cargando...</div>
+  </div>
+  <div class="live-badge" id="live-badge">
+    <div class="live-dot"></div>
+    EN VIVO
+  </div>
+</header>
+
+<!-- FILA 1 — SEMÁFOROS -->
+<section class="semaforos">
+
+  <div class="card" id="card-sin-responder" data-status="neutral">
+    <div class="card-icon">🎫</div>
+    <div class="card-value" id="val-sin-responder">—</div>
+    <div class="card-label">Sin responder ahora</div>
+  </div>
+
+  <div class="card" id="card-mas-antiguo" data-status="neutral">
+    <div class="card-icon">⏱️</div>
+    <div class="card-value" id="val-mas-antiguo">—</div>
+    <div class="card-label">Ticket más antiguo</div>
+  </div>
+
+  <div class="card" id="card-frt" data-status="neutral">
+    <div class="card-icon">⚡</div>
+    <div class="card-value" id="val-frt">—</div>
+    <div class="card-label">FRT promedio hoy</div>
+  </div>
+
+  <div class="card" id="card-sla" data-status="neutral">
+    <div class="card-icon">🎯</div>
+    <div class="card-value" id="val-sla">—</div>
+    <div class="card-label">% dentro de SLA</div>
+  </div>
+
+  <div class="card" id="card-cola" data-status="neutral">
+    <div class="card-icon">📋</div>
+    <div class="card-value" id="val-cola">—</div>
+    <div class="card-label">Cola total</div>
+  </div>
+
+</section>
+
+<!-- FILA 2 — RITMO DEL DÍA -->
+<section class="ritmo">
+
+  <div class="panel">
+    <div class="panel-title">Ritmo del día</div>
+    <div class="barras-grid">
+      <div class="barra-item">
+        <div class="barra-label">
+          <span>Entrantes</span>
+          <span id="bar-val-entrantes">—</span>
+        </div>
+        <div class="barra-track">
+          <div class="barra-fill entrantes" id="bar-fill-entrantes" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="barra-item">
+        <div class="barra-label">
+          <span>Resueltos</span>
+          <span id="bar-val-resueltos">—</span>
+        </div>
+        <div class="barra-track">
+          <div class="barra-fill resueltos" id="bar-fill-resueltos" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="barra-item">
+        <div class="barra-label">
+          <span>En cola ahora</span>
+          <span id="bar-val-cola">—</span>
+        </div>
+        <div class="barra-track">
+          <div class="barra-fill backlog" id="bar-fill-cola" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">FRT del día</div>
+    <div class="frt-big" id="frt-big">—</div>
+    <div class="frt-sub">minutos promedio</div>
+    <div class="frt-meta">
+      <div class="frt-row">
+        <span>Meta</span>
+        <span>≤ 45 min</span>
+      </div>
+      <div class="frt-row">
+        <span>% SLA</span>
+        <span id="frt-sla-mini">—</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Asignación</div>
+    <div class="agentes-list" id="agentes-list">
+      <div style="color:var(--muted);font-size:0.85rem">Cargando...</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- FILA 3 — CONTEXTO OPERATIVO -->
+<section class="contexto">
+
+  <div class="panel">
+    <div class="panel-title">Por canal</div>
+    <div class="canal-list" id="canal-list">
+      <div class="canal-row"><span>✉️ Email</span><span id="c-email">—</span></div>
+      <div class="canal-row"><span>💬 WhatsApp</span><span id="c-whatsapp">—</span></div>
+      <div class="canal-row"><span>📷 Instagram</span><span id="c-instagram">—</span></div>
+      <div class="canal-row"><span>👥 Facebook</span><span id="c-facebook">—</span></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Por marca</div>
+    <div class="marca-list" id="marca-list">
+      <div class="marca-row"><span>🇨🇱 Chile</span><span id="m-chile">—</span></div>
+      <div class="marca-row"><span>🇪🇸 España</span><span id="m-españa">—</span></div>
+      <div class="marca-row"><span>🇩🇪 Alemania</span><span id="m-alemania">—</span></div>
+      <div class="marca-row"><span>🇺🇸 USA</span><span id="m-usa">—</span></div>
+      <div class="marca-row"><span>🇪🇺 Europa</span><span id="m-europa">—</span></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Heatmap — últimos 7 días (hora × día)</div>
+    <div class="heatmap-wrap">
+      <div class="heatmap-grid" id="heatmap-grid"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Semanal — entrantes vs resueltos</div>
+    <svg class="weekly-chart" id="weekly-chart" viewBox="0 0 400 160" preserveAspectRatio="none"></svg>
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="zombie-badge" id="zombie-badge">
+    🧟 Tickets zombi: <span id="val-zombies">—</span>
+  </div>
+  <div>Última actualización: <span id="last-update">—</span></div>
+  <div>Refresco cada 60 s</div>
+</footer>
+
+<script src="/js/app.js"></script>
+</body>
+</html>
