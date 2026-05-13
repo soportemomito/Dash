@@ -5,11 +5,11 @@ let lastFetch = null;
 function getStatus(metric, val) {
   if (val == null) return 'neutral';
   const rules = {
-    sinResponder: [[0, 3, 'verde'], [4, 8, 'amarillo'], [9, Infinity, 'rojo']],
-    masAntiguo:   [[0, 0.33, 'verde'], [0.34, 0.75, 'amarillo'], [0.76, Infinity, 'rojo']],
-    frtHoy:       [[0, 29, 'verde'], [30, 45, 'amarillo'], [46, Infinity, 'rojo']],
-    colaTotal:    [[0, 14, 'verde'], [15, 30, 'amarillo'], [31, Infinity, 'rojo']],
-    pctSla:       [[90.01, 100, 'verde'], [75, 90, 'amarillo'], [0, 74.99, 'rojo']],
+    sinResponder: [[0, 10, 'verde'], [11, 20, 'amarillo'], [30, Infinity, 'rojo']],
+    masAntiguo: [[0, 0.33, 'verde'], [0.34, 0.75, 'amarillo'], [0.76, Infinity, 'rojo']],
+    frtHoy: [[0, 29, 'verde'], [30, 45, 'amarillo'], [46, Infinity, 'rojo']],
+    colaTotal: [[0, 14, 'verde'], [15, 30, 'amarillo'], [31, Infinity, 'rojo']],
+    pctSla: [[90.01, 100, 'verde'], [75, 90, 'amarillo'], [0, 74.99, 'rojo']],
   }[metric] || [];
   for (const [min, max, s] of rules) if (val >= min && val <= max) return s;
   return 'neutral';
@@ -98,7 +98,7 @@ async function fetchHeatmap() {
     const { data } = await res.json();
     renderHeatmap(data);
     renderWeeklyChart(data);
-  } catch {}
+  } catch { }
 }
 
 function renderHeatmap(data) {
@@ -123,7 +123,7 @@ function renderHeatmap(data) {
       const intensity = Math.round((val / maxVal) * 100);
       const cell = document.createElement('div');
       cell.className = 'hm-cell';
-      cell.title = `${['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][d]} ${h}:00 — ${val} tickets`;
+      cell.title = `${['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'][d]} ${h}:00 — ${val} tickets`;
       cell.style.background = val === 0
         ? 'var(--border)'
         : `rgba(96,165,250,${0.15 + (intensity / 100) * 0.85})`;

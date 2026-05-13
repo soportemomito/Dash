@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: soymomo-cs-dash
+    env: node
+    buildCommand: npm install
+    startCommand: node index.js
+    healthCheckPath: /ping
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Añade el resto en el dashboard de Render:
+      # CHATWOOT_BASE_URL, CHATWOOT_API_TOKEN, CHATWOOT_ACCOUNT_ID
+      # SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
+      # SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, EMAIL_FROM, EMAIL_TO
+      # AGENT_MAP, BOT_AGENT_IDS
