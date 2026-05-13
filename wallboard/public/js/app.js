@@ -1,5 +1,4 @@
-const REFRESH_MS = 60 * 1000;
-const STALE_MS = 2 * 60 * 1000;
+const REFRESH_MS = 30 * 1000;
 
 let lastFetch = null;
 
@@ -35,44 +34,28 @@ function updateSemaforos(s) {
   setCard('card-sla', pctSla?.valor,
     pctSla?.valor != null ? `${pctSla.valor.toFixed(1)}%` : '—', 'pctSla');
   setCard('card-cola', colaTotal?.valor, colaTotal?.valor ?? '—', 'colaTotal');
-
-  const frtBig = document.getElementById('frt-big');
-  if (frtBig) frtBig.textContent = frtHoy?.valor != null ? `${frtHoy.valor}` : '—';
-
-  const frtSla = document.getElementById('frt-sla-mini');
-  if (frtSla) frtSla.textContent = pctSla?.valor != null ? `${pctSla.valor.toFixed(1)}%` : '—';
-}
-
-function updateBarras(semaforos, today) {
-  const entrantes = today?.tickets_entrantes ?? 0;
-  const resueltos = today?.tickets_resueltos ?? 0;
-  const cola = semaforos?.colaTotal?.valor ?? 0;
-  const maxVal = Math.max(entrantes, resueltos, cola, 1);
-
-  document.getElementById('bar-val-entrantes').textContent = entrantes;
-  document.getElementById('bar-val-resueltos').textContent = resueltos;
-  document.getElementById('bar-val-cola').textContent = cola;
-
-  document.getElementById('bar-fill-entrantes').style.width = `${(entrantes / maxVal) * 100}%`;
-  document.getElementById('bar-fill-resueltos').style.width = `${(resueltos / maxVal) * 100}%`;
-  document.getElementById('bar-fill-cola').style.width = `${(cola / maxVal) * 100}%`;
 }
 
 function updateAgentes(agentes) {
   const el = document.getElementById('agentes-list');
   if (!el) return;
-  if (!agentes || !agentes.length) { el.innerHTML = '<div style="color:var(--muted)">Sin datos</div>'; return; }
 
-  const max = Math.max(...agentes.map(a => a.abiertos), 1);
-  el.innerHTML = agentes.map(a => `
-    <div class="agente-row">
-      <span class="agente-nombre">${a.nombre}</span>
-      <div class="agente-bar-track">
-        <div class="agente-bar-fill" style="width:${(a.abiertos / max) * 100}%"></div>
+  const filtered = (agentes || []).filter(a => a.tipo !== 'bot');
+  if (!filtered.length) { el.innerHTML = '<div style="color:var(--muted)">Sin datos</div>'; return; }
+
+  const max = Math.max(...filtered.map(a => a.abiertos), 1);
+  el.innerHTML = filtered.map(a => {
+    const unasigned = a.tipo === 'sin_asignar';
+    return `
+      <div class="agente-row${unasigned ? ' sin-asignar' : ''}">
+        <span class="agente-nombre">${unasigned ? '⚠ Sin asignar' : a.nombre}</span>
+        <div class="agente-bar-track">
+          <div class="agente-bar-fill${unasigned ? ' sin-asignar' : ''}" style="width:${(a.abiertos / max) * 100}%"></div>
+        </div>
+        <span class="agente-count">${a.abiertos}</span>
       </div>
-      <span class="agente-count">${a.abiertos}</span>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
 function updateCanales(porCanal) {
@@ -102,8 +85,10 @@ function updateZombies(count) {
 
 function updateLastUpdate(ts) {
   const el = document.getElementById('last-update');
-  if (!el || !ts) return;
-  el.textContent = new Date(ts).toLocaleTimeString('es-CL');
+  const hd = document.getElementById('header-update');
+  const time = ts ? new Date(ts).toLocaleTimeString('es-CL') : null;
+  if (el && time) el.textContent = time;
+  if (hd && time) hd.textContent = `Act. ${time}`;
 }
 
 async function fetchHeatmap() {
@@ -190,15 +175,6 @@ function updateClock() {
   const d = now.toLocaleDateString('es-CL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   document.getElementById('clock').textContent = t;
   document.getElementById('date').textContent = d;
-
-  const badge = document.getElementById('live-badge');
-  if (badge && lastFetch && Date.now() - lastFetch > STALE_MS) {
-    badge.className = 'live-badge stale';
-    badge.lastElementChild.textContent = 'DATOS VIEJOS';
-  } else if (badge) {
-    badge.className = 'live-badge';
-    badge.lastElementChild.textContent = 'EN VIVO';
-  }
 }
 
 async function fetchMetrics() {
@@ -209,7 +185,6 @@ async function fetchMetrics() {
     lastFetch = Date.now();
 
     updateSemaforos(data.semaforos);
-    updateBarras(data.semaforos, data.today);
     updateAgentes(data.agentes);
     updateCanales(data.porCanal);
     updateMarcas(data.porMarca);
@@ -227,7 +202,7 @@ function init() {
   fetchMetrics();
   fetchHeatmap();
   setInterval(fetchMetrics, REFRESH_MS);
-  setInterval(fetchHeatmap, 10 * 60 * 1000);
+  setInterval(fetchHeatmap, 5 * 60 * 1000);
 }
 
 document.addEventListener('DOMContentLoaded', init);

@@ -63,13 +63,17 @@ async function getAllOpenPending() {
   return [...open, ...pending];
 }
 
+async function getSummaryRange(since, until) {
+  const { data } = await http.get('/reports/summary', {
+    params: { since, until, type: 'account' },
+  });
+  return data;
+}
+
 async function getDailySummary() {
   const now = Math.floor(Date.now() / 1000);
   const startOfDay = Math.floor(new Date().setHours(0, 0, 0, 0) / 1000);
-  const { data } = await http.get('/reports/summary', {
-    params: { since: startOfDay, until: now, type: 'account' },
-  });
-  return data;
+  return getSummaryRange(startOfDay, now);
 }
 
 async function getAgentSummary(agentId) {
@@ -136,6 +140,7 @@ function mapConversation(conv, inboxMap = {}) {
 module.exports = {
   getAllOpenPending,
   getDailySummary,
+  getSummaryRange,
   getAgentSummary,
   getInboxMap,
   mapConversation,

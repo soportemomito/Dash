@@ -26,6 +26,6 @@ module.exports = {
   },
   app: {
     port: parseInt(process.env.PORT, 10) || 3000,
-    syncIntervalMs: 60 * 1000,
+    syncIntervalMs: 30 * 1000,
   },
 };

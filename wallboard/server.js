@@ -6,6 +6,8 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/ping', (_req, res) => res.send('pong'));
+
 function getSemaforoStatus(metric, value) {
   if (value == null) return 'neutral';
   const t = {

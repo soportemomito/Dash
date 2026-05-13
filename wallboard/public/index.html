@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SoyMomo CS — Wallboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -15,10 +18,7 @@
     <div class="header-time" id="clock">--:--:--</div>
     <div class="header-date" id="date">cargando...</div>
   </div>
-  <div class="live-badge" id="live-badge">
-    <div class="live-dot"></div>
-    EN VIVO
-  </div>
+  <div class="header-update" id="header-update">Cargando...</div>
 </header>
 
 <!-- FILA 1 — SEMÁFOROS -->
@@ -56,60 +56,12 @@
 
 </section>
 
-<!-- FILA 2 — RITMO DEL DÍA -->
+<!-- FILA 2 — ASIGNACIÓN -->
 <section class="ritmo">
 
   <div class="panel">
-    <div class="panel-title">Ritmo del día</div>
-    <div class="barras-grid">
-      <div class="barra-item">
-        <div class="barra-label">
-          <span>Entrantes</span>
-          <span id="bar-val-entrantes">—</span>
-        </div>
-        <div class="barra-track">
-          <div class="barra-fill entrantes" id="bar-fill-entrantes" style="width:0%"></div>
-        </div>
-      </div>
-      <div class="barra-item">
-        <div class="barra-label">
-          <span>Resueltos</span>
-          <span id="bar-val-resueltos">—</span>
-        </div>
-        <div class="barra-track">
-          <div class="barra-fill resueltos" id="bar-fill-resueltos" style="width:0%"></div>
-        </div>
-      </div>
-      <div class="barra-item">
-        <div class="barra-label">
-          <span>En cola ahora</span>
-          <span id="bar-val-cola">—</span>
-        </div>
-        <div class="barra-track">
-          <div class="barra-fill backlog" id="bar-fill-cola" style="width:0%"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-title">FRT del día</div>
-    <div class="frt-big" id="frt-big">—</div>
-    <div class="frt-sub">minutos promedio</div>
-    <div class="frt-meta">
-      <div class="frt-row">
-        <span>Meta</span>
-        <span>≤ 45 min</span>
-      </div>
-      <div class="frt-row">
-        <span>% SLA</span>
-        <span id="frt-sla-mini">—</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-title">Asignación</div>
+    <div class="panel-title">Tickets en espera por agente</div>
+    <div class="panel-sub">Cola en tiempo real · conversaciones open + pending asignadas · excluye Bot</div>
     <div class="agentes-list" id="agentes-list">
       <div style="color:var(--muted);font-size:0.85rem">Cargando...</div>
     </div>

@@ -20,8 +20,14 @@ async function runSync() {
 
 async function runHourlySync() {
   try {
-    const summary = await chatwoot.getDailySummary();
+    const nowTs = Math.floor(Date.now() / 1000);
+    const oneHourAgoTs = nowTs - 3600;
     const today = new Date().toISOString().split('T')[0];
+
+    const [summary, hourSummary] = await Promise.all([
+      chatwoot.getDailySummary(),
+      chatwoot.getSummaryRange(oneHourAgoTs, nowTs),
+    ]);
 
     const frtSeg = parseFloat(summary?.avg_first_response_time) || null;
     const artSeg = parseFloat(summary?.avg_resolution_time) || null;
@@ -39,9 +45,11 @@ async function runHourlySync() {
     await supabase.upsertHourlyMetrics({
       fecha_hora: hourSlot.toISOString(),
       frt_promedio_seg: frtSeg ? Math.round(frtSeg) : null,
+      tickets_entrantes: hourSummary?.incoming_messages_count || 0,
+      tickets_resueltos: hourSummary?.resolutions_count || 0,
     });
 
-    console.log(`[sync-horario] Métricas diarias actualizadas — ${new Date().toLocaleTimeString('es-CL')}`);
+    console.log(`[sync-horario] Métricas horarias actualizadas — ${new Date().toLocaleTimeString('es-CL')}`);
   } catch (err) {
     console.error('[sync-horario] Error:', err.message);
   }
