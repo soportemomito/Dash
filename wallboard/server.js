@@ -56,16 +56,17 @@ app.get('/api/metrics/live', async (req, res) => {
       marcaCount[t.marca || 'global'] = (marcaCount[t.marca || 'global'] || 0) + 1;
     });
 
-    allQueue.forEach(t => {
+    // Solo tickets open sin respuesta (esperando al agente)
+    unanswered.forEach(t => {
       const nombre = t.agente_nombre || 'Sin asignar';
       agenteCount[nombre] = (agenteCount[nombre] || 0) + 1;
     });
 
     const agentes = Object.entries(agenteCount)
-      .map(([nombre, abiertos]) => ({
+      .map(([nombre, count]) => ({
         nombre,
-        abiertos,
-        tipo: nombre === 'Sin asignar' ? 'sin_asignar' : nombre === 'Bot' ? 'bot' : 'humano',
+        abiertos: count,
+        tipo: nombre === 'Sin asignar' ? 'sin_asignar' : 'humano',
       }))
       .sort((a, b) => b.abiertos - a.abiertos);
 

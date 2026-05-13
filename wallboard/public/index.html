@@ -42,19 +42,13 @@
     <div class="card" id="card-frt" data-status="neutral">
       <div class="card-icon">⚡</div>
       <div class="card-value" id="val-frt">—</div>
-      <div class="card-label">FRT promedio hoy</div>
+      <div class="card-label">Primera respuesta promedio hoy</div>
     </div>
 
     <div class="card" id="card-sla" data-status="neutral">
       <div class="card-icon">🎯</div>
       <div class="card-value" id="val-sla">—</div>
-      <div class="card-label">% dentro de SLA</div>
-    </div>
-
-    <div class="card" id="card-cola" data-status="neutral">
-      <div class="card-icon">📋</div>
-      <div class="card-value" id="val-cola">—</div>
-      <div class="card-label">Cola total</div>
+      <div class="card-label">Conversaciones dentro de SLA</div>
     </div>
 
   </section>
@@ -63,8 +57,8 @@
   <section class="ritmo">
 
     <div class="panel">
-      <div class="panel-title">Tickets en espera por agente</div>
-      <div class="panel-sub">Cola en tiempo real · conversaciones open + pending asignadas · excluye Bot</div>
+      <div class="panel-title">Tickets sin respuesta por agente</div>
+      <div class="panel-sub">Conversaciones abiertas esperando respuesta del agente · excluye Bot y pending</div>
       <div class="agentes-list" id="agentes-list">
         <div style="color:var(--muted);font-size:0.85rem">Cargando...</div>
       </div>
@@ -96,17 +90,6 @@
       </div>
     </div>
 
-    <div class="panel">
-      <div class="panel-title">Heatmap — últimos 7 días (hora × día)</div>
-      <div class="heatmap-wrap">
-        <div class="heatmap-grid" id="heatmap-grid"></div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-title">Semanal — entrantes vs resueltos</div>
-      <svg class="weekly-chart" id="weekly-chart" viewBox="0 0 400 160" preserveAspectRatio="none"></svg>
-    </div>
 
   </section>
 
@@ -116,7 +99,7 @@
       🧟 Tickets zombies: <span id="val-zombies">—</span>
     </div>
     <div>Última actualización: <span id="last-update">—</span></div>
-    <div>Refresco cada 60 s</div>
+    <div>Refresco cada 5 s</div>
   </footer>
 
   <script src="/js/app.js"></script>

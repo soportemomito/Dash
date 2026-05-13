@@ -108,7 +108,7 @@ header::before {
 /* ── SEMÁFOROS ── */
 .semaforos {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
 }
 
@@ -383,7 +383,7 @@ header::before {
 /* ── CONTEXTO OPERATIVO ── */
 .contexto {
   display: grid;
-  grid-template-columns: 1fr 1fr 2fr 2fr;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
 
