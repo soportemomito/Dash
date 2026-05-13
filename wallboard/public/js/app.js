@@ -1,4 +1,4 @@
-const REFRESH_MS = 30 * 1000;
+const REFRESH_MS = 5 * 1000;
 
 let lastFetch = null;
 
