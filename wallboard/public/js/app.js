@@ -104,12 +104,17 @@ function updateST(data) {
   const stComp = document.getElementById('st-val-completados');
   if (stComp) stComp.textContent = data.completados ?? '—';
 
-  const origenMap = {};
-  (data.porOrigen || []).forEach(o => { origenMap[o.origen] = o.count; });
-  ['falabella', 'hites', 'directo'].forEach(o => {
-    const el = document.getElementById(`st-o-${o}`);
-    if (el) el.textContent = origenMap[o] ?? 0;
-  });
+  const origenEl = document.getElementById('st-origen-list');
+  if (origenEl) {
+    const origenItems = (data.porOrigen || []).sort((a, b) => b.count - a.count);
+    origenEl.innerHTML = origenItems.length
+      ? origenItems.map(o => `
+          <div class="canal-row">
+            <span>${o.origen}</span>
+            <span>${o.count}</span>
+          </div>`).join('')
+      : '<div style="color:var(--muted)">Sin datos</div>';
+  }
 
   const listEl = document.getElementById('st-pendientes-list');
   if (listEl) {

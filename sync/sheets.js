@@ -37,10 +37,9 @@ function parseDate(str) {
 }
 
 function getOrigen(orden = '') {
-  const o = orden.trim().toUpperCase().replace(/^X/, '');
-  if (o.startsWith('F')) return 'falabella';
-  if (o.startsWith('H')) return 'hites';
-  return 'directo';
+  const o = orden.trim().replace(/^X/i, '');
+  const match = o.match(/^([A-Za-z]+)/);
+  return match ? match[1].toUpperCase() : 'Recepción';
 }
 
 async function fetchSheet(sheetName) {
