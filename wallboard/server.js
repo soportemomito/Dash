@@ -120,6 +120,11 @@ app.get('/api/metrics/live', async (req, res) => {
   }
 });
 
+app.get('/api/debug/st', (req, res) => {
+  const data = sheets.getMetrics();
+  res.json(data || { error: 'aún no cargado' });
+});
+
 app.get('/api/metrics/st', (req, res) => {
   const data = sheets.getMetrics();
   if (!data) return res.status(503).json({ error: 'Cargando datos ST...' });
