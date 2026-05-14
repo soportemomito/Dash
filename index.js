@@ -1,5 +1,6 @@
 const config = require('./config');
 const { runSync } = require('./sync/sync');
+const { runSheetsSync } = require('./sync/sheets');
 const scheduler = require('./reports/scheduler');
 const server = require('./wallboard/server');
 
@@ -26,6 +27,9 @@ async function main() {
 
   await runSync();
   setInterval(runSync, config.app.syncIntervalMs);
+
+  await runSheetsSync();
+  setInterval(runSheetsSync, 60 * 1000); // cada 1 minuto
 }
 
 main().catch(err => {

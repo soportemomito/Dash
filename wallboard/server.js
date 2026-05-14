@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const supabase = require('../sync/supabase');
+const sheets = require('../sync/sheets');
 const events = require('../events');
 
 const app = express();
@@ -117,6 +118,12 @@ app.get('/api/metrics/live', async (req, res) => {
     console.error('/api/metrics/live:', err.message);
     res.status(500).json({ error: 'Error al obtener métricas' });
   }
+});
+
+app.get('/api/metrics/st', (req, res) => {
+  const data = sheets.getMetrics();
+  if (!data) return res.status(503).json({ error: 'Cargando datos ST...' });
+  res.json(data);
 });
 
 app.get('/api/debug/unanswered', async (req, res) => {

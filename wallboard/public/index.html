@@ -66,30 +66,56 @@
 
   </section>
 
-  <!-- FILA 3 — CONTEXTO OPERATIVO -->
+  <!-- FILA 3 — SERVICIO TÉCNICO -->
+  <section class="st-header">
+    <div class="section-divider">Servicio Técnico — desde 01/01/2026</div>
+  </section>
+
+  <section class="semaforos st-semaforos">
+
+    <div class="card" id="st-card-pendientes" data-status="neutral">
+      <div class="card-icon">🔧</div>
+      <div class="card-value" id="st-val-pendientes">—</div>
+      <div class="card-label">ST Pendientes</div>
+    </div>
+
+    <div class="card" id="st-card-antiguedad" data-status="neutral">
+      <div class="card-icon">📅</div>
+      <div class="card-value" id="st-val-antiguedad">—</div>
+      <div class="card-label">ST más antiguo</div>
+    </div>
+
+    <div class="card" id="st-card-tiempo" data-status="neutral">
+      <div class="card-icon">⏱️</div>
+      <div class="card-value" id="st-val-tiempo">—</div>
+      <div class="card-label">Tiempo promedio ST</div>
+    </div>
+
+    <div class="card" id="st-card-completados" data-status="neutral">
+      <div class="card-icon">✅</div>
+      <div class="card-value" id="st-val-completados">—</div>
+      <div class="card-label">ST Completados 2026</div>
+    </div>
+
+  </section>
+
   <section class="contexto">
 
     <div class="panel">
-      <div class="panel-title">Por canal</div>
-      <div class="canal-list" id="canal-list">
-        <div class="canal-row"><span>✉️ Email</span><span id="c-email">—</span></div>
-        <div class="canal-row"><span>💬 WhatsApp</span><span id="c-whatsapp">—</span></div>
-        <div class="canal-row"><span>📷 Instagram</span><span id="c-instagram">—</span></div>
-        <div class="canal-row"><span>👥 Facebook</span><span id="c-facebook">—</span></div>
+      <div class="panel-title">Por origen</div>
+      <div class="canal-list" id="st-origen-list">
+        <div class="canal-row"><span>🏪 Falabella</span><span id="st-o-falabella">—</span></div>
+        <div class="canal-row"><span>🛍️ Hites</span><span id="st-o-hites">—</span></div>
+        <div class="canal-row"><span>👤 Directo</span><span id="st-o-directo">—</span></div>
       </div>
     </div>
 
     <div class="panel">
-      <div class="panel-title">Por marca</div>
-      <div class="marca-list" id="marca-list">
-        <div class="marca-row"><span>🇨🇱 Chile</span><span id="m-chile">—</span></div>
-        <div class="marca-row"><span>🇪🇸 España</span><span id="m-españa">—</span></div>
-        <div class="marca-row"><span>🇩🇪 Alemania</span><span id="m-alemania">—</span></div>
-        <div class="marca-row"><span>🇺🇸 USA</span><span id="m-usa">—</span></div>
-        <div class="marca-row"><span>🇪🇺 Europa</span><span id="m-europa">—</span></div>
+      <div class="panel-title">ST Pendientes — lista</div>
+      <div class="agentes-list" id="st-pendientes-list">
+        <div style="color:var(--muted);font-size:0.85rem">Cargando...</div>
       </div>
     </div>
-
 
   </section>
 

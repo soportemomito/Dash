@@ -74,6 +74,68 @@ function updateMarcas(porMarca) {
   });
 }
 
+function getStStatus(metric, val) {
+  if (val == null) return 'neutral';
+  const rules = {
+    pendientes:   [[0, 5, 'verde'], [6, 15, 'amarillo'], [16, Infinity, 'rojo']],
+    antiguedad:   [[0, 7, 'verde'], [8, 15, 'amarillo'], [16, Infinity, 'rojo']],
+    tiempo:       [[0, 7, 'verde'], [8, 14, 'amarillo'], [15, Infinity, 'rojo']],
+  }[metric] || [];
+  for (const [min, max, s] of rules) if (val >= min && val <= max) return s;
+  return 'neutral';
+}
+
+function updateST(data) {
+  if (!data) return;
+
+  const setStCard = (id, metric, value, text) => {
+    const card = document.getElementById(`st-card-${id}`);
+    const val = document.getElementById(`st-val-${id}`);
+    if (card) card.dataset.status = getStStatus(metric, value);
+    if (val) val.textContent = text ?? '—';
+  };
+
+  setStCard('pendientes', 'pendientes', data.pendientes, data.pendientes ?? '—');
+  setStCard('antiguedad', 'antiguedad', data.masAntiguo,
+    data.masAntiguo != null ? `${data.masAntiguo}d` : '—');
+  setStCard('tiempo', 'tiempo', data.tiempoPromedio,
+    data.tiempoPromedio != null ? `${data.tiempoPromedio}d` : '—');
+
+  const stComp = document.getElementById('st-val-completados');
+  if (stComp) stComp.textContent = data.completados ?? '—';
+
+  const origenMap = {};
+  (data.porOrigen || []).forEach(o => { origenMap[o.origen] = o.count; });
+  ['falabella', 'hites', 'directo'].forEach(o => {
+    const el = document.getElementById(`st-o-${o}`);
+    if (el) el.textContent = origenMap[o] ?? 0;
+  });
+
+  const listEl = document.getElementById('st-pendientes-list');
+  if (listEl) {
+    const items = data.pendientesList || [];
+    if (!items.length) {
+      listEl.innerHTML = '<div style="color:var(--muted)">Sin pendientes</div>';
+    } else {
+      listEl.innerHTML = items.map(t => `
+        <div class="agente-row">
+          <span class="agente-nombre">${t.orden}</span>
+          <span style="color:var(--muted);font-size:0.8rem">${t.tipo === 'dist' ? 'Dist.' : 'Rec.'}</span>
+          <span class="agente-count">${t.dias}d</span>
+        </div>
+      `).join('');
+    }
+  }
+}
+
+async function fetchST() {
+  try {
+    const res = await fetch('/api/metrics/st');
+    if (!res.ok) return;
+    updateST(await res.json());
+  } catch { }
+}
+
 function updateZombies(count) {
   const el = document.getElementById('val-zombies');
   const badge = document.getElementById('zombie-badge');
@@ -212,6 +274,9 @@ function init() {
   connectSSE();
   fetchHeatmap();
   setInterval(fetchHeatmap, 5 * 60 * 1000);
+
+  fetchST();
+  setInterval(fetchST, 60 * 1000); // cada 1 minuto
 }
 
 document.addEventListener('DOMContentLoaded', init);
