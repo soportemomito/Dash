@@ -73,22 +73,10 @@
 
   <section class="semaforos st-semaforos">
 
-    <div class="card" id="st-card-pendientes" data-status="neutral">
-      <div class="card-icon">🔧</div>
-      <div class="card-value" id="st-val-pendientes">—</div>
-      <div class="card-label">ST Pendientes</div>
-    </div>
-
     <div class="card" id="st-card-antiguedad" data-status="neutral">
       <div class="card-icon">📅</div>
       <div class="card-value" id="st-val-antiguedad">—</div>
       <div class="card-label">ST más antiguo</div>
-    </div>
-
-    <div class="card" id="st-card-tiempo" data-status="neutral">
-      <div class="card-icon">⏱️</div>
-      <div class="card-value" id="st-val-tiempo">—</div>
-      <div class="card-label">Tiempo promedio ST</div>
     </div>
 
     <div class="card" id="st-card-completados" data-status="neutral">
@@ -99,18 +87,11 @@
 
   </section>
 
-  <section class="contexto">
+  <section class="st-lista">
 
     <div class="panel">
-      <div class="panel-title">Por origen</div>
-      <div class="canal-list" id="st-origen-list">
-        <div style="color:var(--muted);font-size:0.85rem">Cargando...</div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-title">ST Pendientes — lista</div>
-      <div class="agentes-list" id="st-pendientes-list">
+      <div class="panel-title">ST Pendientes</div>
+      <div class="st-pendientes-grid" id="st-pendientes-list">
         <div style="color:var(--muted);font-size:0.85rem">Cargando...</div>
       </div>
     </div>

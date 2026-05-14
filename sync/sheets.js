@@ -95,13 +95,13 @@ async function runSheetsSync() {
       status: (r[0] || '').trim().toUpperCase(),
       orden:  (r[1] || '').trim(),
       fecha:  parseDate(r[2]),
-    })).filter(r => r.fecha && r.fecha >= FILTER_FROM);
+    })).filter(r => r.fecha && r.fecha >= FILTER_FROM && r.orden);
 
     const recepcionRows = recepcion.slice(1).map(r => ({
       status: (r[0] || '').trim().toUpperCase(),
       orden:  (r[2] || '').trim(),
       fecha:  parseDate(r[3]),
-    })).filter(r => r.fecha && r.fecha >= FILTER_FROM);
+    })).filter(r => r.fecha && r.fecha >= FILTER_FROM && r.orden);
 
     const all = [
       ...entradasRows.map(r => ({ ...r, tipo: 'dist' })),

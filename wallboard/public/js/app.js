@@ -95,26 +95,11 @@ function updateST(data) {
     if (val) val.textContent = text ?? '—';
   };
 
-  setStCard('pendientes', 'pendientes', data.pendientes, data.pendientes ?? '—');
   setStCard('antiguedad', 'antiguedad', data.masAntiguo,
     data.masAntiguo != null ? `${data.masAntiguo}d` : '—');
-  setStCard('tiempo', 'tiempo', data.tiempoPromedio,
-    data.tiempoPromedio != null ? `${data.tiempoPromedio}d` : '—');
 
   const stComp = document.getElementById('st-val-completados');
   if (stComp) stComp.textContent = data.completados ?? '—';
-
-  const origenEl = document.getElementById('st-origen-list');
-  if (origenEl) {
-    const origenItems = (data.porOrigen || []).sort((a, b) => b.count - a.count);
-    origenEl.innerHTML = origenItems.length
-      ? origenItems.map(o => `
-          <div class="canal-row">
-            <span>${o.origen}</span>
-            <span>${o.count}</span>
-          </div>`).join('')
-      : '<div style="color:var(--muted)">Sin datos</div>';
-  }
 
   const listEl = document.getElementById('st-pendientes-list');
   if (listEl) {
@@ -122,13 +107,22 @@ function updateST(data) {
     if (!items.length) {
       listEl.innerHTML = '<div style="color:var(--muted)">Sin pendientes</div>';
     } else {
-      listEl.innerHTML = items.map(t => `
-        <div class="agente-row">
-          <span class="agente-nombre">${t.orden}</span>
-          <span style="color:var(--muted);font-size:0.8rem">${t.tipo === 'dist' ? 'Dist.' : 'Rec.'}</span>
-          <span class="agente-count">${t.dias}d</span>
-        </div>
-      `).join('');
+      const maxDias = Math.max(...items.map(t => t.dias), 1);
+      listEl.innerHTML = items.map(t => {
+        const pct = Math.round((t.dias / maxDias) * 100);
+        const color = t.dias >= 30 ? 'var(--rojo)' : t.dias >= 14 ? 'var(--amarillo)' : 'var(--verde)';
+        return `
+          <div class="st-pendiente-row">
+            <div class="st-pendiente-header">
+              <span class="st-pendiente-orden">${t.orden}</span>
+              <span class="st-pendiente-tipo">${t.tipo === 'dist' ? 'Distribución' : 'Recepción'}</span>
+              <span class="st-pendiente-dias" style="color:${color}">${t.dias}d</span>
+            </div>
+            <div class="st-bar-track">
+              <div class="st-bar-fill" style="width:${pct}%;background:${color}"></div>
+            </div>
+          </div>`;
+      }).join('');
     }
   }
 }

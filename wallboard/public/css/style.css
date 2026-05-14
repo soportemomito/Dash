@@ -475,9 +475,76 @@ header::before {
 .section-divider::before { left: 5%; }
 .section-divider::after  { right: 5%; transform: scaleX(-1); }
 
-/* Reducir tamaño de card-value en la sección ST para caber mejor */
-.st-semaforos .card-value { font-size: 2.2rem; }
-.st-semaforos .card { padding: 12px 14px; }
+/* ST semáforos: 2 columnas */
+.st-semaforos { grid-template-columns: repeat(2, 1fr); }
+.st-semaforos .card-value { font-size: 2.4rem; }
+.st-semaforos .card { padding: 14px 18px; }
+
+/* ST lista panel */
+.st-lista {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.st-pendientes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.st-pendiente-row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.st-pendiente-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.st-pendiente-orden {
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  flex: 1;
+}
+
+.st-pendiente-tipo {
+  font-size: 0.68rem;
+  color: var(--muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.st-pendiente-dias {
+  font-size: 0.9rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  min-width: 30px;
+  text-align: right;
+}
+
+.st-bar-track {
+  height: 4px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.st-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  opacity: 0.8;
+  transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
 /* ── FOOTER ── */
 footer {
