@@ -3,6 +3,7 @@ const path = require('path');
 const supabase = require('../sync/supabase');
 const sheets = require('../sync/sheets');
 const events = require('../events');
+const config = require('../config');
 
 const app = express();
 const sseClients = new Set();
@@ -26,12 +27,16 @@ function getSemaforoStatus(metric, value) {
   return 'neutral';
 }
 
+function isBot(t) {
+  return t.agente_nombre === 'Bot' || config.agents.botIds.has(String(t.agente_id));
+}
+
 async function computeLiveMetrics() {
   const { tickets, today } = await supabase.getLiveData();
 
   const allQueue = tickets.filter(t => ['open', 'pending'].includes(t.estado));
-  const queue = allQueue.filter(t => t.agente_nombre !== 'Bot');
-  const open = tickets.filter(t => t.estado === 'open' && t.agente_nombre !== 'Bot');
+  const queue = allQueue.filter(t => !isBot(t));
+  const open = tickets.filter(t => t.estado === 'open' && !isBot(t));
   const unanswered = open.filter(t => t.waiting_since);
 
   const oldest = unanswered.sort(
