@@ -50,6 +50,7 @@ async function fetchSheet(sheetName) {
 }
 
 async function runSheetsSync() {
+  console.log('[sheets] iniciando sync...');
   try {
     const [entradas, recepcion, salida, salidaDist] = await Promise.all([
       fetchSheet('Entradas'),
@@ -57,6 +58,7 @@ async function runSheetsSync() {
       fetchSheet('Salida'),
       fetchSheet('SalidaDist'),
     ]);
+    console.log(`[sheets] filas obtenidas — Entradas:${entradas.length} Recepcion:${recepcion.length} Salida:${salida.length} SalidaDist:${salidaDist.length}`);
 
     // Entradas: A=status, B=orden, C=fecha
     const entradasRows = entradas.slice(1)
@@ -109,6 +111,7 @@ async function runSheetsSync() {
       origenMap[o] = (origenMap[o] || 0) + 1;
     });
 
+    console.log(`[sheets] pendientes:${pendientes.length} completados:${completados.length} durations:${durations.length}`);
     cachedMetrics = {
       pendientes: pendientes.length,
       completados: completados.length,
