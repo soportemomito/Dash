@@ -94,6 +94,30 @@ app.get('/api/metrics/live', async (req, res) => {
   }
 });
 
+app.get('/api/debug/unanswered', async (req, res) => {
+  try {
+    const { tickets } = await supabase.getLiveData();
+    const open = tickets.filter(t => t.estado === 'open' && t.agente_nombre !== 'Bot');
+    const unanswered = open.filter(t => t.waiting_since);
+    res.json({
+      total_open_no_bot: open.length,
+      total_unanswered: unanswered.length,
+      tickets: unanswered.map(t => ({
+        id: t.id,
+        agente_nombre: t.agente_nombre,
+        agente_id: t.agente_id,
+        canal: t.canal,
+        marca: t.marca,
+        waiting_since: t.waiting_since,
+        ultima_actividad_en: t.ultima_actividad_en,
+        creado_en: t.creado_en,
+      })),
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/api/metrics/heatmap', async (req, res) => {
   try {
     const data = await supabase.getHeatmapData();
