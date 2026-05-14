@@ -63,7 +63,7 @@ async function computeLiveMetrics() {
     marcaCount[t.marca || 'global'] = (marcaCount[t.marca || 'global'] || 0) + 1;
   });
 
-  unanswered.forEach(t => {
+  open.forEach(t => {
     const nombre = t.agente_nombre || 'Sin asignar';
     agenteCount[nombre] = (agenteCount[nombre] || 0) + 1;
   });
