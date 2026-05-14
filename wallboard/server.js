@@ -127,7 +127,8 @@ app.get('/api/metrics/live', async (req, res) => {
 
 app.get('/api/debug/st', (req, res) => {
   const data = sheets.getMetrics();
-  res.json(data || { error: 'aún no cargado' });
+  if (data) return res.json(data);
+  res.json({ status: 'sin datos', lastError: sheets.getLastError() || 'sin error registrado' });
 });
 
 app.get('/api/metrics/st', (req, res) => {

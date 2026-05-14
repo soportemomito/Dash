@@ -4,6 +4,7 @@ const SPREADSHEET_ID = '1nYvYZ65w7ZMXQd0eJZIF4qUh_T92qelJUY1GeIY7fiQ';
 const FILTER_FROM = new Date('2026-01-01');
 
 let cachedMetrics = null;
+let lastError = null;
 
 function parseCSV(text) {
   const rows = [];
@@ -122,10 +123,12 @@ async function runSheetsSync() {
 
     console.log(`[sheets] ${pendientes.length} pendientes, ${completados.length} completados — ${new Date().toLocaleTimeString('es-CL')}`);
   } catch (err) {
+    lastError = err.message;
     console.error('[sheets] Error:', err.message);
   }
 }
 
 function getMetrics() { return cachedMetrics; }
+function getLastError() { return lastError; }
 
-module.exports = { runSheetsSync, getMetrics };
+module.exports = { runSheetsSync, getMetrics, getLastError };
