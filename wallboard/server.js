@@ -107,13 +107,19 @@ events.on('synced', async () => {
   }
 });
 
-app.get('/api/metrics/stream', (req, res) => {
+app.get('/api/metrics/stream', async (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');
   res.flushHeaders();
   sseClients.add(res);
   req.on('close', () => sseClients.delete(res));
+  try {
+    const data = await computeLiveMetrics();
+    res.write(`data: ${JSON.stringify(data)}\n\n`);
+  } catch (err) {
+    console.error('[sse] initial push error:', err.message);
+  }
 });
 
 app.get('/api/metrics/live', async (req, res) => {

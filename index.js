@@ -29,7 +29,7 @@ async function main() {
   setInterval(runSync, config.app.syncIntervalMs);
 
   await runSheetsSync();
-  setInterval(runSheetsSync, 60 * 1000); // cada 1 minuto
+  setInterval(runSheetsSync, 30 * 1000);
 }
 
 main().catch(err => {

@@ -271,11 +271,13 @@ function init() {
 
   fetchMetrics();
   connectSSE();
+  setInterval(fetchMetrics, 30 * 1000); // respaldo si SSE falla
+
   fetchHeatmap();
   setInterval(fetchHeatmap, 5 * 60 * 1000);
 
   fetchST();
-  setInterval(fetchST, 60 * 1000); // cada 1 minuto
+  setInterval(fetchST, 30 * 1000);
 }
 
 document.addEventListener('DOMContentLoaded', init);
