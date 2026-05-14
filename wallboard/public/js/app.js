@@ -1,5 +1,3 @@
-const REFRESH_MS = 5 * 1000; // 5 segundos de refresh
-
 let lastFetch = null;
 
 function getStatus(metric, val) {
@@ -177,22 +175,33 @@ function updateClock() {
   document.getElementById('date').textContent = d;
 }
 
+function applyMetrics(data) {
+  lastFetch = Date.now();
+  updateSemaforos(data.semaforos);
+  updateAgentes(data.agentes);
+  updateCanales(data.porCanal);
+  updateMarcas(data.porMarca);
+  updateZombies(data.zombies);
+  updateLastUpdate(data.lastUpdate);
+}
+
 async function fetchMetrics() {
   try {
     const res = await fetch('/api/metrics/live');
     if (!res.ok) throw new Error(res.status);
-    const data = await res.json();
-    lastFetch = Date.now();
-
-    updateSemaforos(data.semaforos);
-    updateAgentes(data.agentes);
-    updateCanales(data.porCanal);
-    updateMarcas(data.porMarca);
-    updateZombies(data.zombies);
-    updateLastUpdate(data.lastUpdate);
+    applyMetrics(await res.json());
   } catch (err) {
     console.error('Error al obtener métricas:', err);
   }
+}
+
+function connectSSE() {
+  const src = new EventSource('/api/metrics/stream');
+  src.onmessage = (e) => applyMetrics(JSON.parse(e.data));
+  src.onerror = () => {
+    src.close();
+    setTimeout(connectSSE, 5000);
+  };
 }
 
 function init() {
@@ -200,8 +209,8 @@ function init() {
   setInterval(updateClock, 1000);
 
   fetchMetrics();
+  connectSSE();
   fetchHeatmap();
-  setInterval(fetchMetrics, REFRESH_MS);
   setInterval(fetchHeatmap, 5 * 60 * 1000);
 }
 

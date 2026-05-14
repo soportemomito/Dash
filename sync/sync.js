@@ -1,5 +1,6 @@
 const chatwoot = require('./chatwoot');
 const supabase = require('./supabase');
+const events = require('../events');
 
 async function runSync() {
   try {
@@ -11,6 +12,7 @@ async function runSync() {
     const snapshots = conversations.map(c => chatwoot.mapConversation(c, inboxMap));
     await supabase.upsertTickets(snapshots);
     await supabase.deleteStale();
+    events.emit('synced');
 
     console.log(`[sync] ${snapshots.length} tickets — ${new Date().toLocaleTimeString('es-CL')}`);
   } catch (err) {
